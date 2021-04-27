@@ -15,7 +15,7 @@ class Artwork < ApplicationRecord
     message: "has already been used by this artist. Please choose a different one" }
 
   belongs_to :artist,
-    foreign_key: :artist_id,
     primary_key: :id,
+    foreign_key: :artist_id,
     class_name: :User
 end
