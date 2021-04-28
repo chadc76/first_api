@@ -28,21 +28,22 @@ ActiveRecord::Schema.define(version: 2021_04_28_211122) do
   create_table "artworks", force: :cascade do |t|
     t.string "title", null: false
     t.string "image_url", null: false
-    t.integer "artist_id", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "artist_id", null: false
     t.index ["artist_id"], name: "index_artworks_on_artist_id"
+    t.index ["image_url"], name: "index_artworks_on_image_url", unique: true
     t.index ["title", "artist_id"], name: "index_artworks_on_title_and_artist_id", unique: true
   end
 
   create_table "comments", force: :cascade do |t|
-    t.integer "author_id", null: false
+    t.integer "user_id", null: false
     t.integer "artwork_id", null: false
     t.string "body", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["artwork_id"], name: "index_comments_on_artwork_id"
-    t.index ["author_id"], name: "index_comments_on_author_id"
+    t.index ["user_id"], name: "index_comments_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
