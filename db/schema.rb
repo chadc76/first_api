@@ -36,13 +36,13 @@ ActiveRecord::Schema.define(version: 2021_04_28_203712) do
   end
 
   create_table "comments", force: :cascade do |t|
-    t.integer "author_id", null: false
+    t.integer "artist_id", null: false
     t.integer "artwork_id", null: false
     t.string "body", null: false
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.index ["artist_id"], name: "index_comments_on_artist_id"
     t.index ["artwork_id"], name: "index_comments_on_artwork_id"
-    t.index ["author_id"], name: "index_comments_on_author_id"
   end
 
   create_table "users", force: :cascade do |t|
