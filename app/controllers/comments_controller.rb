@@ -26,6 +26,29 @@ class CommentsController < ApplicationController
     render json: comment
   end
 
+  def likes
+    comment = Comment.find(params[:id])
+    render json: {likes: comment.likes.length}
+  end
+
+  def like
+    like = Like.new(user_id: params[:user_id], likeable_id: params[:id], likeable_type: 'Comment')
+    if like.save
+      render json: like
+    else
+      render json: like.errors.full_messages, status: :unprocessable_entity
+    end
+  end
+
+  def unlike
+    like = Like.find_by(user_id: params[:user_id], likeable_id: params[:id], likeable_type: 'Comment')
+    if like.destroy
+      render json: like
+    else
+      render json: like.errors.full_messages, status: :unprocessable_entity
+    end
+  end
+
   private
 
   def comment_params

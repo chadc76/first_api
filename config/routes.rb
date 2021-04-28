@@ -3,7 +3,19 @@ Rails.application.routes.draw do
   resources :users, only: [:index, :create, :show, :update, :destroy] do
     resources :artworks, only: [:index]
   end
-  resources :artworks, only: [:create, :show, :update, :destroy]
+  resources :artworks, only: [:create, :show, :update, :destroy] do
+    member do
+      get 'likes'
+      post 'like'
+      post 'unlike'
+    end
+  end
   resources :artwork_shares, only: [:create, :destroy]
-  resources :comments, only: [:index, :create, :destroy]
+  resources :comments, only: [:index, :create, :destroy] do
+    member do
+      get 'likes'
+      post 'like'
+      post 'unlike'
+    end
+  end
 end
