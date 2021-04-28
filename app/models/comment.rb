@@ -3,7 +3,7 @@
 # Table name: comments
 #
 #  id         :bigint           not null, primary key
-#  artist_id  :integer          not null
+#  user_id    :integer          not null
 #  artwork_id :integer          not null
 #  body       :string           not null
 #  created_at :datetime         not null
@@ -21,4 +21,17 @@ class Comment < ApplicationRecord
       primary_key: :id,
       foreign_key: :artwork_id,
       class_name: :Artwork
+
+    has_many :likes,
+      as: :likeable,
+      dependent: :destroy,
+      primary_key: :id,
+      foreign_key: :likeable_id,
+      class_name: :Like
+
+    def liked_by
+      self.likes
+      .map(&:user_id)
+      .map { |id| User.find(id) }
+    end
 end

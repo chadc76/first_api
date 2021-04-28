@@ -5,9 +5,9 @@
 #  id         :bigint           not null, primary key
 #  title      :string           not null
 #  image_url  :string           not null
-#  artist_id  :string           not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  artist_id  :integer          not null
 #
 class Artwork < ApplicationRecord
   validates :title, :image_url, :artist_id, presence: true
@@ -35,4 +35,17 @@ class Artwork < ApplicationRecord
     primary_key: :id,
     foreign_key: :artwork_id,
     class_name: :Comment
+
+  has_many :likes,
+    as: :likeable,
+    dependent: :destroy,
+    primary_key: :id,
+    foreign_key: :likeable_id,
+    class_name: :Like
+
+  def liked_by
+    self.likes
+    .map(&:user_id)
+    .map { |id| User.find(id) }
+  end
 end
