@@ -10,5 +10,5 @@
 #  updated_at :datetime         not null
 #
 class Comment < ApplicationRecord
-  validates :artwork_id, :artist_id, :body, presence: true
+  validates :artwork_id, :author_id, :body, presence: true
 end
