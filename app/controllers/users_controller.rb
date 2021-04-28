@@ -1,6 +1,11 @@
 class UsersController < ApplicationController
   def index
-    render json: User.all
+     if params[:username]
+      user = User.where(username: params[:username])
+      !user.empty? ? (render json: user) : (render json: "User not found", status: 404)
+    else
+      render json: User.all
+    end
   end
 
   def create
