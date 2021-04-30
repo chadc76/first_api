@@ -11,6 +11,7 @@
 #
 class Comment < ApplicationRecord
   validates :artwork_id, :user_id, :body, presence: true
+  validate :access
 
   belongs_to :author,
     primary_key: :id,
@@ -32,4 +33,15 @@ class Comment < ApplicationRecord
     has_many :likers,
       through: :likes,
       source: :liker
+
+    def access
+      art = Artwork.find(artwork_id)
+      if (art.artist_id == user_id)
+        return
+      elsif (art.shared_viewers.map(&:id).include?(self.user_id))
+        return
+      else
+        errors.add(:user_id, "doesn't have permission to view this artwork!")
+      end
+    end
 end
