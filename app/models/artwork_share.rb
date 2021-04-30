@@ -13,6 +13,7 @@ class ArtworkShare < ApplicationRecord
   validates :artwork_id, :viewer_id, presence: true
   validates :artwork_id, uniqueness: { scope: :viewer_id, 
     message: "has already been shared with this artist" }
+  validate :not_self_share
 
   belongs_to :artwork,
     primary_key: :id,
@@ -23,4 +24,11 @@ class ArtworkShare < ApplicationRecord
     primary_key: :id,
     foreign_key: :viewer_id,
     class_name: :User
+
+  def not_self_share
+    art = Artwork.find(artwork_id)
+    unless art.artist_id != viewer_id
+      errors.add(:artwork_id, "cannot be shared with Artist")
+    end
+  end
 end
