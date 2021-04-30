@@ -15,6 +15,8 @@ class Artwork < ApplicationRecord
   validates :image_url, uniqueness: true
   validates :title, uniqueness: { scope: :artist_id, 
     message: "has already been used by this artist. Please choose a different one" }
+  after_destroy :log_destroy_action
+
 
   belongs_to :artist,
     primary_key: :id,
@@ -47,4 +49,18 @@ class Artwork < ApplicationRecord
   has_many :likers,
     through: :likes,
     source: :liker
+
+  has_many :artwork_collections,
+    primary_key: :id,
+    foreign_key: :artwork_id,
+    class_name: :ArtworkCollection
+
+  has_many :collections,
+    through: :artwork_collections,
+    source: :collection
+
+  def log_destroy_action
+    puts 'Artwork destroyed'
+  end 
+
 end

@@ -45,4 +45,10 @@ class User < ApplicationRecord
   has_many :liked_artworks,
     through: :artworks,
     source: :likes
+
+  has_many :collections,
+    dependent: :destroy,
+    primary_key: :id,
+    foreign_key: :user_id,
+    class_name: :Collection
 end
