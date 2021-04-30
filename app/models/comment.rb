@@ -29,9 +29,7 @@ class Comment < ApplicationRecord
       foreign_key: :likeable_id,
       class_name: :Like
 
-    def liked_by
-      self.likes
-      .map(&:user_id)
-      .map { |id| User.find(id) }
-    end
+    has_many :likers,
+      through: :likes,
+      source: :liker
 end
