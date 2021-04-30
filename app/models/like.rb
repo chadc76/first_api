@@ -19,6 +19,8 @@ class Like < ApplicationRecord
   validates :user_id, uniqueness: { scope: [:likeable_id, :likeable_type],
   message: "has already liked this" }
   validate :access, :not_conceited
+  after_destroy :log_destroy_action
+
 
   belongs_to :likeable, 
     polymorphic: true,
@@ -50,4 +52,9 @@ class Like < ApplicationRecord
       end
     end
   end
+
+  def log_destroy_action
+    puts 'Like destroyed'
+  end 
+
 end
